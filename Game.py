@@ -1,4 +1,6 @@
 import pygame, sys, random, math
+from Point import Point
+
 
 class Game():
     def __init__(self):
@@ -8,6 +10,9 @@ class Game():
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
 
+        self.rangeX = (0, self.width)
+        self.rangeY = (0, self.height)
+        self.amount_of_coordiantes = 5  # or however many points you want
         self.marker_size = 9
 
         self.generate_random_points()
@@ -26,24 +31,24 @@ class Game():
             self.update(delta_time, events)
             pygame.display.flip()
 
-
     def generate_random_points(self):
-        self.rangeX = (0, self.width)
-        self.rangeY = (0, self.height)
-        self.qty = 5  # or however many points you want
-
         self.random_points = []
+        self.distances = []
         i = 0
-        while i < self.qty:
+        while i < self.amount_of_coordiantes:
             x = random.randrange(*self.rangeX)
             y = random.randrange(*self.rangeY)
             self.random_points.append((x, y))
             i += 1
+        self.point = Point(self.random_points[0][0], self.random_points[0][1])
+        print(self.point.distance_to(Point(self.random_points[1][0], self.random_points[1][1])))
+
 
     def draw(self):
         for coordinate in self.random_points:
             pygame.draw.rect(self.screen,(0, 0, 0),[coordinate[0] - math.floor(self.marker_size / 2),coordinate[1] - math.floor(self.marker_size / 2),self.marker_size,self.marker_size])
-
+        pygame.draw.rect(self.screen,(0, 255, 0),[self.random_points[0][0] - math.floor(self.marker_size / 2),self.random_points[0][1] - math.floor(self.marker_size / 2),self.marker_size,self.marker_size])
+        pygame.draw.rect(self.screen,(255, 0, 0),[self.random_points[1][0] - math.floor(self.marker_size / 2),self.random_points[1][1] - math.floor(self.marker_size / 2),self.marker_size,self.marker_size])
 
     def update(self, delta_time, events):
         for event in events:
