@@ -1,2 +1,2 @@
 # the-traveling-salesman
-visualisation of a well-know programming problem and my attemts to solve it
+visualisation of a well-known programming problem and my attempts to solve it
