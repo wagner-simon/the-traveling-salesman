@@ -66,7 +66,8 @@ class Calculator:
             self.random_points.append(Point(x, y))
 
     def get_distance(self):
-        self.set_permutations()
+        if self.algorithm == PERMUTATION:
+            self.permutations = itertools.permutations(self.random_points)
         i = 0
         while self.thread_running:
             if self.thread_stop:
@@ -80,19 +81,13 @@ class Calculator:
         self.thread_stop = False
         self.thread_running = False
 
-    def set_permutations(self):
-        if self.algorithm == RANDOM:
-            self.permutations = None
-        if self.algorithm == PERMUTATION:
-            self.permutations = itertools.permutations(self.random_points)
-
     def get_new_path(self):
         if self.algorithm == RANDOM:
             self.current_path = random.sample(self.random_points, len(self.random_points))
         if self.algorithm == PERMUTATION:
             try:
                 self.current_path = next(self.permutations)
-            except StopIteration:
+            except StopIteration:               # stop if algorithm is finished
                 self.thread_finished = True
                 self.thread_running = False
                 return
@@ -103,6 +98,10 @@ class Calculator:
         for index, point in enumerate(self.current_path):
             if self.thread_stop:
                 self.stop_thread()
+            '''
+                checks if algorithm was stopped so you don't have to wait until the 
+                distance is calculated until the program ends 
+            '''
             try:
                 distance += point.distance_to(self.current_path[index + 1])
             except IndexError:
