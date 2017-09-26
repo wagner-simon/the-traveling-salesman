@@ -29,7 +29,7 @@ class Game():
                     if event.key == pygame.K_ESCAPE:
                         sys.exit()
             self.update(delta_time, events)
-            self.renderer.draw()
+            self.renderer.draw(self.screen)
             if self.screenshot_requested:
                 util.save_screenshot(self)
                 self.screenshot_requested = False

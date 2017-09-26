@@ -9,21 +9,22 @@ class Renderer:
         self.background_color = 200, 200, 200
         self.marker_size = 9
         self.loading_bar_thickness = 4
+        self.loading_bar_progress = 0
         self.padding = 32
         
         self.font = pygame.font.Font('assets/fonts/joystix monospace.ttf', 30)
 
-    def draw(self):
-        self.game.screen.fill(self.background_color)
+    def draw(self, screen):
+        screen.fill(self.background_color)
         self.draw_shortest_path()
         self.draw_points()
 
         printing_distance = str(int(math.floor(self.game.calculator.shortest_distance)))
         text_distance = self.font.render(printing_distance, False, (255, 0, 0))
-        self.game.screen.blit(text_distance, (self.padding, self.padding))
+        screen.blit(text_distance, (self.padding, self.padding))
 
-        self.draw_indicators()
-        self.draw_algorithm_font()
+        self.draw_indicators(screen)
+        self.draw_algorithm_font(screen)
 
     def draw_shortest_path(self):
         for index, point in enumerate(self.game.calculator.shortest_path):
@@ -49,22 +50,22 @@ class Renderer:
             draw_rect = pygame.Rect(
                 point.x - math.floor(self.marker_size / 2),     # x coordinate
                 point.y - math.floor(self.marker_size / 2),     # y coordinate
-                self.marker_size,                               # width
-                self.marker_size                                # height
-        )
+                self.marker_size,                               # height
+                self.marker_size                                # width
+            )
             pygame.draw.rect(self.game.screen, (0, 0, 0), draw_rect)
 
-    def draw_indicators(self):
+    def draw_indicators(self, screen):
         if self.game.calculator.algorithm == RANDOM:
-            self.draw_random_text()
+            self.draw_random_text(screen)
         if self.game.calculator.algorithm == PERMUTATION:
-            self.draw_permutation_text()
+            self.draw_permutation_text(screen)
             self.draw_loading_bar()
 
-    def draw_random_text(self):
+    def draw_random_text(self, screen):
         text_width, text_height = self.font.size(str(self.game.calculator.current_iteration))
         text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, (255, 0, 0))
-        self.game.screen.blit(
+        screen.blit(
             source=text_iterations,
             dest=(
                 self.game.width - text_width - self.padding,    # x coordinate of textbox
@@ -72,13 +73,13 @@ class Renderer:
             )
         )
 
-    def draw_permutation_text(self):
+    def draw_permutation_text(self, screen):
         text_width, text_height = self.font.size(str(round(self.game.calculator.percentage, 2)) + "%")
         text_iterations = self.font.render(
             str(round(self.game.calculator.percentage, 2)) + "%",
             False,
             (255, 0, 0))
-        self.game.screen.blit(
+        screen.blit(
             source=text_iterations,
             dest=(
                 self.game.width - text_width - self.padding,    # x coordinate of textbox
@@ -97,10 +98,10 @@ class Renderer:
 
         pygame.draw.rect(self.game.screen, (255, 0, 0), draw_rect)
 
-    def draw_algorithm_font(self):
+    def draw_algorithm_font(self, screen):
         text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (255, 0, 0))
         text_type_width, text_type_height = self.font.size(ALGORITHM_NAMES[self.game.calculator.algorithm])
-        self.game.screen.blit(
+        screen.blit(
             source=text_algorithm_type,
             dest=(
                 self.game.width - text_type_width - self.padding,   # x coordinate of textbox

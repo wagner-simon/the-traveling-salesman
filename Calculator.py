@@ -91,7 +91,7 @@ class Calculator:
                 self.thread_finished = True
                 self.thread_running = False
                 return
-            self.percentage = float(self.current_iteration + 1) / float(self.amount_of_iterations) * 100
+            self.percentage = float(self.current_iteration) / float(self.amount_of_iterations) * 100
 
     def calculate_shortest_distance(self):
         distance = 0
@@ -112,3 +112,5 @@ class Calculator:
         if distance < self.shortest_distance or self.shortest_distance == 0:
             self.shortest_distance = distance
             self.shortest_path = self.current_path
+
+
