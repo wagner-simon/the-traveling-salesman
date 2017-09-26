@@ -105,3 +105,6 @@ ENV/
 
 Python compiled files
 *.pyc
+
+# Screenshots
+*.png
