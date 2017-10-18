@@ -20,7 +20,7 @@ class Renderer:
         self.draw_points()
 
         printing_distance = str(int(math.floor(self.game.calculator.shortest_distance)))
-        text_distance = self.font.render(printing_distance, False, (255, 0, 0))
+        text_distance = self.font.render(printing_distance, False, (97, 169, 188))
         screen.blit(text_distance, (self.padding, self.padding))
 
         self.draw_indicators(screen)
@@ -64,7 +64,7 @@ class Renderer:
 
     def draw_random_text(self, screen):
         text_width, text_height = self.font.size(str(self.game.calculator.current_iteration))
-        text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, (255, 0, 0))
+        text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, (97, 169, 188))
         screen.blit(
             source=text_iterations,
             dest=(
@@ -78,7 +78,7 @@ class Renderer:
         text_iterations = self.font.render(
             str(round(self.game.calculator.percentage, 2)) + "%",
             False,
-            (255, 0, 0))
+            (97, 169, 188))
         screen.blit(
             source=text_iterations,
             dest=(
@@ -96,10 +96,10 @@ class Renderer:
             self.loading_bar_thickness,
         )
 
-        pygame.draw.rect(self.game.screen, (255, 0, 0), draw_rect)
+        pygame.draw.rect(self.game.screen, (97, 169, 188), draw_rect)
 
     def draw_algorithm_font(self, screen):
-        text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (255, 0, 0))
+        text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (97, 169, 188))
         text_type_width, text_type_height = self.font.size(ALGORITHM_NAMES[self.game.calculator.algorithm])
         screen.blit(
             source=text_algorithm_type,
