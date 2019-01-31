@@ -16,6 +16,7 @@ class Game():
         self.clock = pygame.time.Clock()
         self.renderer = Renderer(self)
         self.calculator = Calculator(self)
+        self.saved_points = []
 
         self.screenshot_requested = False
 
@@ -43,16 +44,19 @@ class Game():
                 if event.key == pygame.K_SPACE:
                     self.calculator.thread_stop = True
                     self.calculator.thread_finished = False
+                    self.calculator.reset_points = True
                 if event.key == pygame.K_s:
                     self.screenshot_requested = True
                 if event.key == pygame.K_1:
                     self.calculator.thread_stop = True
                     self.calculator.thread_finished = False
                     self.calculator.selected_algorithm = RANDOM
+                    self.calculator.reset_points = False
                 if event.key == pygame.K_2:
                     self.calculator.thread_stop = True
                     self.calculator.thread_finished = False
                     self.calculator.selected_algorithm = PERMUTATION
+                    self.calculator.reset_points = False
         if not self.calculator.thread_running and not self.calculator.thread_finished:
             self.calculator.algorithm = self.calculator.selected_algorithm
             self.calculator.start_thread()
