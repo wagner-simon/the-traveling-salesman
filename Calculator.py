@@ -20,6 +20,7 @@ class Calculator:
 
         self.algorithm = RANDOM
         self.selected_algorithm = self.algorithm
+        self.reset_points = True
 
     def set_thread_states(self):
         self.thread_running = False
@@ -35,10 +36,11 @@ class Calculator:
     def set_points(self):
         self.shortest_path = []
         self.random_points = []
+        self.saved_points = []
 
         self.rangeX = (0, self.width)
         self.rangeY = (0, self.height)
-        self.amount_of_points = 9
+        self.amount_of_points = 98
 
     def start_thread(self):
         self.thread = threading.Thread(target=Calculator.reset_thread_variables, args=(self,))
@@ -53,7 +55,11 @@ class Calculator:
 
         self.set_points()
 
-        self.generate_random_points()
+        if self.reset_points:
+            self.generate_random_points()
+            self.game.saved_points = self.random_points
+        else:
+            self.random_points = self.game.saved_points
 
         self.amount_of_iterations = math.factorial(self.amount_of_points)
 
@@ -64,6 +70,7 @@ class Calculator:
             x = random.randrange(*self.rangeX)
             y = random.randrange(*self.rangeY)
             self.random_points.append(Point(x, y))
+        self.saved_points = self.random_points
 
     def get_distance(self):
         if self.algorithm == PERMUTATION:
