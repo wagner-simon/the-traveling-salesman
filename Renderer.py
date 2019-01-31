@@ -74,9 +74,9 @@ class Renderer:
         )
 
     def draw_permutation_text(self, screen):
-        text_width, text_height = self.font.size(str(round(self.game.calculator.percentage, 2)) + "%")
+        text_width, text_height = self.font.size(str(round(self.game.calculator.percentage, 2)) + '%')
         text_iterations = self.font.render(
-            str(round(self.game.calculator.percentage, 2)) + "%",
+            str(round(self.game.calculator.percentage, 2)) + '%',
             False,
             (97, 169, 188))
         screen.blit(
