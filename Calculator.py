@@ -40,7 +40,7 @@ class Calculator:
 
         self.rangeX = (0, self.width)
         self.rangeY = (0, self.height)
-        self.amount_of_points = 98
+        self.amount_of_points = 9
 
     def start_thread(self):
         self.thread = threading.Thread(target=Calculator.reset_thread_variables, args=(self,))
