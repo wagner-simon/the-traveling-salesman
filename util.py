@@ -12,4 +12,4 @@ ALGORITHM_NAMES = {
 
 def save_screenshot(game):
     timestamp = int(time.time())
-    pygame.image.save(game.screen, str(timestamp) + ".png")
+    pygame.image.save(game.screen, "screenshots/" + str(timestamp) + ".png")
