@@ -103,8 +103,11 @@ ENV/
 # Pycharm
 .idea
 
-Python compiled files
+# Python compiled files
 *.pyc
 
 # Screenshots
 *.png
+
+# MacOS Files
+*.DS_Store

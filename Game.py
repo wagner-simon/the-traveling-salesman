@@ -13,6 +13,7 @@ class Game():
         pygame.init()
         self.size = self.width, self.height = 640, 640
         self.screen = pygame.display.set_mode(self.size)
+        pygame.display.set_caption('Traveling Salesman Problem')
         self.clock = pygame.time.Clock()
         self.renderer = Renderer(self)
         self.calculator = Calculator(self)

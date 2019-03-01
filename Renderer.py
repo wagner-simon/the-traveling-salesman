@@ -57,12 +57,12 @@ class Renderer:
 
     def draw_indicators(self, screen):
         if self.game.calculator.algorithm == RANDOM:
-            self.draw_random_text(screen)
+            self.draw_text_random(screen)
         if self.game.calculator.algorithm == PERMUTATION:
-            self.draw_permutation_text(screen)
+            self.draw_text_permutation(screen)
             self.draw_loading_bar()
 
-    def draw_random_text(self, screen):
+    def draw_text_random(self, screen):
         text_width, text_height = self.font.size(str(self.game.calculator.current_iteration))
         text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, (97, 169, 188))
         screen.blit(
@@ -73,10 +73,10 @@ class Renderer:
             )
         )
 
-    def draw_permutation_text(self, screen):
-        text_width, text_height = self.font.size(str(round(self.game.calculator.percentage, 2)) + "%")
+    def draw_text_permutation(self, screen):
+        text_width, text_height = self.font.size(str(round(self.game.calculator.percentage, 2)) + '%')
         text_iterations = self.font.render(
-            str(round(self.game.calculator.percentage, 2)) + "%",
+            str(round(self.game.calculator.percentage, 2)) + '%',
             False,
             (97, 169, 188))
         screen.blit(
