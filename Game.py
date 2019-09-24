@@ -1,14 +1,12 @@
 import pygame
 import sys
 from Calculator import Calculator
-from util import RANDOM, PERMUTATION
+from util import RANDOM, PERMUTATION, GENETIC
 import util
 from Renderer import Renderer
 
 
-
-
-class Game():
+class Game:
     def __init__(self):
         pygame.init()
         self.size = self.width, self.height = 640, 640
@@ -22,7 +20,6 @@ class Game():
         self.screenshot_requested = False
 
         while True:
-            delta_time = 1 / float(self.clock.tick(60))
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
@@ -30,16 +27,14 @@ class Game():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         sys.exit()
-            self.update(delta_time, events)
+            self.update(events)
             self.renderer.draw(self.screen)
             if self.screenshot_requested:
                 util.save_screenshot(self)
                 self.screenshot_requested = False
             pygame.display.flip()
 
-
-
-    def update(self, delta_time, events):
+    def update(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -57,6 +52,11 @@ class Game():
                     self.calculator.thread_stop = True
                     self.calculator.thread_finished = False
                     self.calculator.selected_algorithm = PERMUTATION
+                    self.calculator.reset_points = False
+                if event.key == pygame.K_3:
+                    self.calculator.thread_stop = True
+                    self.calculator.thread_finished = False
+                    self.calculator.selected_algorithm = GENETIC
                     self.calculator.reset_points = False
         if not self.calculator.thread_running and not self.calculator.thread_finished:
             self.calculator.algorithm = self.calculator.selected_algorithm

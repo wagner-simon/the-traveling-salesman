@@ -1,6 +1,6 @@
 import pygame
 import math
-from util import RANDOM, PERMUTATION, ALGORITHM_NAMES
+from util import RANDOM, PERMUTATION, GENETIC, ALGORITHM_NAMES
 
 
 class Renderer:
@@ -61,6 +61,8 @@ class Renderer:
         if self.game.calculator.algorithm == PERMUTATION:
             self.draw_text_permutation(screen)
             self.draw_loading_bar()
+        if self.game.calculator.algorithm == GENETIC:
+            self.draw_text_genetic(screen)
 
     def draw_text_random(self, screen):
         text_width, text_height = self.font.size(str(self.game.calculator.current_iteration))
@@ -97,6 +99,10 @@ class Renderer:
         )
 
         pygame.draw.rect(self.game.screen, (97, 169, 188), draw_rect)
+
+    def  draw_text_genetic(self, screen):
+        self.draw_text_random(screen)
+
 
     def draw_algorithm_font(self, screen):
         text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (97, 169, 188))
