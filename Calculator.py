@@ -4,11 +4,11 @@ import itertools
 import threading
 from Point import Point
 from util import RANDOM, PERMUTATION, GENETIC
-from genetic_algorithm_functions import rank_paths, next_generation
+from genetic_algorithm import rank_paths, next_generation
+import copy
 
 
 class Calculator:
-
     def __init__(self, game):
         self.game = game
         self.width = self.game.width
@@ -22,7 +22,7 @@ class Calculator:
 
         self.set_genetic_variables()
 
-        self.algorithm = RANDOM
+        self.algorithm = PERMUTATION
         self.selected_algorithm = self.algorithm
         self.reset_points = True
 
@@ -34,11 +34,11 @@ class Calculator:
     def set_counters(self):
         self.percentage = 0
         self.current_iteration = 0
-        self.amount_of_permutations = 1
         self.shortest_distance = 0
 
     def set_points(self):
         # for printing the shortest path
+        self.current_path = []
         self.shortest_path = []
         self.random_points = []
         # for switching algorithms but keeping the points
@@ -88,14 +88,12 @@ class Calculator:
             self.permutations = itertools.permutations(self.random_points)
         if self.algorithm == GENETIC:
             self.population = self.initial_population
-        i = 0
         while self.thread_running:
             if self.thread_stop:
                 self.stop_thread()
-            self.current_iteration = i
+            self.current_iteration += 1
             self.get_new_path()
-            self.calculate_shortest_distance()
-            i += 1
+            self.set_shortest_distance()
 
     def stop_thread(self):
         self.thread_stop = False
@@ -118,8 +116,8 @@ class Calculator:
             best_path_index = rank_paths(self.population)[0][0]
             self.current_path = self.population[best_path_index]
 
-    def calculate_shortest_distance(self):
-        distance = 0
+    def calculate_distance(self):
+        distance_calculated = 0
         for index, point in enumerate(self.current_path):
             if self.thread_stop:
                 self.stop_thread()
@@ -128,18 +126,18 @@ class Calculator:
                 distance is calculated until the program ends 
             '''
             try:
-                distance += point.distance_to(self.current_path[index + 1])
+                distance_calculated += point.distance_to(self.current_path[index + 1])
             except IndexError:
                 pass
-        self.set_shortest_distance(distance)
+        return distance_calculated
 
-    def set_shortest_distance(self, distance):
+    def set_shortest_distance(self):
+        distance = self.calculate_distance()
         if distance < self.shortest_distance or self.shortest_distance == 0:
             self.shortest_distance = distance
-            self.shortest_path = self.current_path
+            self.shortest_path = copy.deepcopy(self.current_path)
 
     # everything following is needed for the genetic algorithm
-
     @property
     def create_path(self):
         path = random.sample(self.random_points, len(self.random_points))

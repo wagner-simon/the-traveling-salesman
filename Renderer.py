@@ -100,9 +100,8 @@ class Renderer:
 
         pygame.draw.rect(self.game.screen, (97, 169, 188), draw_rect)
 
-    def  draw_text_genetic(self, screen):
+    def draw_text_genetic(self, screen):
         self.draw_text_random(screen)
-
 
     def draw_algorithm_font(self, screen):
         text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (97, 169, 188))
