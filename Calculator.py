@@ -5,7 +5,7 @@ import threading
 from Point import Point
 from util import RANDOM, PERMUTATION, GENETIC
 from genetic_algorithm import rank_paths, next_generation
-import copy
+from copy import deepcopy
 
 
 class Calculator:
@@ -135,7 +135,7 @@ class Calculator:
         distance = self.calculate_distance()
         if distance < self.shortest_distance or self.shortest_distance == 0:
             self.shortest_distance = distance
-            self.shortest_path = copy.deepcopy(self.current_path)
+            self.shortest_path = deepcopy(self.current_path)
 
     # everything following is needed for the genetic algorithm
     @property
