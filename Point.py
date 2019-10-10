@@ -8,10 +8,5 @@ class Point:
         b = abs(self.y - point.y)
         return ((a ** 2) + (b ** 2)) ** 0.5
 
-    '''
     def __repr__(self):
-        return "Point(" + str(self.x) + "," + str(self.y) + ")"
-
-    def __str__(self):
-        return self.__repr__()
-    '''
+        return 'P(' + str(self.x) + '|' + str(self.y) + ')'
