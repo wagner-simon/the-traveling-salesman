@@ -1,5 +1,5 @@
 import pygame
-import math
+from math import floor
 from util import RANDOM, PERMUTATION, GENETIC, ALGORITHM_NAMES
 
 
@@ -7,6 +7,7 @@ class Renderer:
     def __init__(self, game):
         self.game = game
         self.background_color = 200, 200, 200
+        self.highlight_color = 97, 169, 188
         self.marker_size = 9
         self.loading_bar_thickness = 4
         self.loading_bar_progress = 0
@@ -19,8 +20,8 @@ class Renderer:
         self.draw_shortest_path()
         self.draw_points()
 
-        printing_distance = str(int(math.floor(self.game.calculator.shortest_distance)))
-        text_distance = self.font.render(printing_distance, False, (97, 169, 188))
+        printing_distance = str(int(floor(self.game.calculator.shortest_distance)))
+        text_distance = self.font.render(printing_distance, False, self.highlight_color)
         screen.blit(text_distance, (self.padding, self.padding))
 
         self.draw_indicators(screen)
@@ -48,25 +49,23 @@ class Renderer:
     def draw_points(self):
         for point in self.game.calculator.random_points:
             draw_rect = pygame.Rect(
-                point.x - math.floor(self.marker_size / 2),     # x coordinate
-                point.y - math.floor(self.marker_size / 2),     # y coordinate
+                point.x - floor(self.marker_size / 2),     # x coordinate
+                point.y - floor(self.marker_size / 2),     # y coordinate
                 self.marker_size,                               # height
                 self.marker_size                                # width
             )
             pygame.draw.rect(self.game.screen, (0, 0, 0), draw_rect)
 
     def draw_indicators(self, screen):
-        if self.game.calculator.algorithm == RANDOM:
-            self.draw_text_random(screen)
+        if self.game.calculator.algorithm == RANDOM or self.game.calculator.algorithm == GENETIC:
+            self.draw_text_algorithm(screen)
         if self.game.calculator.algorithm == PERMUTATION:
             self.draw_text_permutation(screen)
             self.draw_loading_bar()
-        if self.game.calculator.algorithm == GENETIC:
-            self.draw_text_genetic(screen)
 
-    def draw_text_random(self, screen):
+    def draw_text_algorithm(self, screen):
         text_width, text_height = self.font.size(str(self.game.calculator.current_iteration))
-        text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, (97, 169, 188))
+        text_iterations = self.font.render(str(self.game.calculator.current_iteration), False, self.highlight_color)
         screen.blit(
             source=text_iterations,
             dest=(
@@ -80,7 +79,8 @@ class Renderer:
         text_iterations = self.font.render(
             str(round(self.game.calculator.percentage, 2)) + '%',
             False,
-            (97, 169, 188))
+            self.highlight_color
+        )
         screen.blit(
             source=text_iterations,
             dest=(
@@ -98,13 +98,14 @@ class Renderer:
             self.loading_bar_thickness,
         )
 
-        pygame.draw.rect(self.game.screen, (97, 169, 188), draw_rect)
-
-    def draw_text_genetic(self, screen):
-        self.draw_text_random(screen)
+        pygame.draw.rect(self.game.screen, self.highlight_color, draw_rect)
 
     def draw_algorithm_font(self, screen):
-        text_algorithm_type = self.font.render(ALGORITHM_NAMES[self.game.calculator.algorithm], False, (97, 169, 188))
+        text_algorithm_type = self.font.render(
+            ALGORITHM_NAMES[self.game.calculator.algorithm],
+            False,
+            self.highlight_color
+        )
         text_type_width, text_type_height = self.font.size(ALGORITHM_NAMES[self.game.calculator.algorithm])
         screen.blit(
             source=text_algorithm_type,
