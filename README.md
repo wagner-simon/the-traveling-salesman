@@ -11,3 +11,4 @@ pressing '3' changes the algorithm to genetic
 the points are kept while changing algorithm
 
 pressing 'space' resets the algorithm and generates new points
+pressing 'escape' exits the program

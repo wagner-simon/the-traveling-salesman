@@ -41,7 +41,7 @@ def breed(parent_1, parent_2):
     child = []
 
     gene_a = int(random() * len(parent_1))
-    gene_b = int(random() * len(parent_1))
+    gene_b = int(random() * len(parent_2))
 
     start_gene = min(gene_a, gene_b)
     end_gene = max(gene_a, gene_b)

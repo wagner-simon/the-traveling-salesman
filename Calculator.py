@@ -8,6 +8,7 @@ from genetic_algorithm import rank_paths, next_generation
 from copy import deepcopy
 
 
+# noinspection PyAttributeOutsideInit
 class Calculator:
     def __init__(self, game):
         self.game = game
@@ -16,9 +17,9 @@ class Calculator:
 
         self.set_thread_states()
 
-        self.set_counters()
-
         self.set_points()
+
+        self.set_counters()
 
         self.set_genetic_variables()
 
@@ -34,7 +35,7 @@ class Calculator:
     def set_counters(self):
         self.percentage = 0
         self.current_iteration = 0
-        self.shortest_distance = 0
+        self.shortest_distance = (((self.width ** 2) + (self.height ** 2)) ** 0.5) * self.amount_of_points
 
     def set_points(self):
         # for printing the shortest path
@@ -46,12 +47,14 @@ class Calculator:
 
         self.rangeX = (0, self.width)
         self.rangeY = (0, self.height)
-        self.amount_of_points = 9
+        self.amount_of_points = 50
 
     def set_genetic_variables(self):
         self.pop_size = 100
         self.elite_size = 20
         self.mutation_rate = 0.01
+        self.generations_without_progress = 0
+        self.max_generation_without_progress = 50
 
     def start_thread(self):
         self.thread = threading.Thread(target=Calculator.reset_thread_variables, args=(self,))
@@ -62,9 +65,9 @@ class Calculator:
         self.thread_running = True
         self.thread_finished = False
 
-        self.set_counters()
-
         self.set_points()
+
+        self.set_counters()
 
         if self.reset_points:
             self.generate_random_points()
@@ -114,6 +117,15 @@ class Calculator:
         if self.algorithm == GENETIC:
             self.population = next_generation(self.population, self.elite_size, self.mutation_rate)
             best_path_index = rank_paths(self.population)[0][0]
+            if self.current_path == self.population[best_path_index] or self.current_path.reverse() == self.population[best_path_index]:
+                self.generations_without_progress += 1
+                print(self.generations_without_progress)
+                if self.generations_without_progress >= self.max_generation_without_progress:
+                    self.thread_finished = True
+                    self.thread_running = False
+                    return
+            else:
+                self.generations_without_progress = 0
             self.current_path = self.population[best_path_index]
 
     def calculate_distance(self):
@@ -133,7 +145,7 @@ class Calculator:
 
     def set_shortest_distance(self):
         distance = self.calculate_distance()
-        if distance < self.shortest_distance or self.shortest_distance == 0:
+        if distance < self.shortest_distance:
             self.shortest_distance = distance
             self.shortest_path = deepcopy(self.current_path)
 
