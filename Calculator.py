@@ -47,7 +47,7 @@ class Calculator:
 
         self.rangeX = (0, self.width)
         self.rangeY = (0, self.height)
-        self.amount_of_points = 50
+        self.amount_of_points = 9
 
     def set_genetic_variables(self):
         self.pop_size = 100
@@ -64,6 +64,8 @@ class Calculator:
     def reset_thread_variables(self):
         self.thread_running = True
         self.thread_finished = False
+
+        self.shortest_path = []
 
         self.set_points()
 
@@ -117,16 +119,8 @@ class Calculator:
         if self.algorithm == GENETIC:
             self.population = next_generation(self.population, self.elite_size, self.mutation_rate)
             best_path_index = rank_paths(self.population)[0][0]
-            if self.current_path == self.population[best_path_index] or self.current_path.reverse() == self.population[best_path_index]:
-                self.generations_without_progress += 1
-                print(self.generations_without_progress)
-                if self.generations_without_progress >= self.max_generation_without_progress:
-                    self.thread_finished = True
-                    self.thread_running = False
-                    return
-            else:
-                self.generations_without_progress = 0
             self.current_path = self.population[best_path_index]
+
 
     def calculate_distance(self):
         distance_calculated = 0
@@ -148,6 +142,14 @@ class Calculator:
         if distance < self.shortest_distance:
             self.shortest_distance = distance
             self.shortest_path = deepcopy(self.current_path)
+        elif self.algorithm == GENETIC:
+            self.generations_without_progress += 1
+            if self.generations_without_progress >= self.max_generation_without_progress:
+                self.thread_finished = True
+                self.thread_running = False
+                return
+        else:
+            self.generations_without_progress = 0
 
     # everything following is needed for the genetic algorithm
     @property
